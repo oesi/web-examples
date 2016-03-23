@@ -1,0 +1,64 @@
+<link rel="import" href="3rdparty/polymer/polymer.html">
+<link rel="import" href="3rdparty/iron-ajax/iron-ajax.html">
+
+<dom-module id="drop-down">
+
+    <template>
+      <select id="mySelect">
+      </select>
+      <iron-ajax
+          auto
+          url="{{src}}"
+          params='{{params}}'
+          handle-as="json"
+          on-response="handleResponse"
+          debounce-duration="300"></iron-ajax>
+    </template>
+
+    <script>
+        Polymer({
+            is: 'drop-down',
+            properties:
+            {
+                selected:
+                {
+                  type: String,
+                  value: ""
+                },
+                name:
+                {
+                    type: String,
+                    value: "id"
+                },
+                daten:
+                {
+                    type: String,
+                    value: "leer"
+                },
+                src:
+                {
+                    type: String,
+                    value:""
+                },
+                params:
+                {
+                    type: Object,
+                    value: {"alt":"json", "q":"chrome"}
+                }
+            },
+            handleResponse: function (evt)
+            {
+                for(i=0;i<evt.target.lastResponse.length;i++)
+                {
+                    var option = document.createElement("option");
+                    option.setAttribute("value",evt.target.lastResponse[i].id);
+                    option.innerHTML=evt.target.lastResponse[i].description;
+                    if(evt.target.lastResponse[i].id==this.selected)
+                        option.setAttribute("selected","selected");
+                    this.$.mySelect.appendChild(option);
+                }
+                this.$.mySelect.setAttribute('name',this.name);
+            }
+        });
+  </script>
+</dom-module>
