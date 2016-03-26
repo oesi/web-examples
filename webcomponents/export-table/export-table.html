@@ -5,20 +5,30 @@
 
     <template>
         <content id="content"></content>
-     <input type="button" value="Download" id="exportbutton"/>
-
+        <input type="button" value="Download" on-tap="handleTap"/>
     </template>
 
     <script>
         Polymer({
             is: 'export-table',
             extends: 'table',
-            ready: function(){
-                this.$.exportbutton.addEventListener("click", function(){
-                    alert('export');
-                    
-                });
+            handleTap: function() {
+                var distributed = this.getContentChildren('#content');
+                var csv='';
+                for(var row=0;row<distributed[1].children.length;row++)
+                {
+                    for(var col=0;col<distributed[1].children[row].children.length;col++)
+                    {
+                        csv = csv + (distributed[1].children[row].children[col].textContent);
+                        csv = csv + ",";
+                    }
+                    csv = csv + "\n\r";
+                }
+
+                window.location.href = 'data:application/csv;charset=utf-8,' + encodeURIComponent(csv);
+
             }
+
         });
   </script>
 </dom-module>
