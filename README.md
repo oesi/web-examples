@@ -1,1 +1,3 @@
 # web-examples
+
+Examples for WebComponents, Localstorage, ServerSentEvents, ...
